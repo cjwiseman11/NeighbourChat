@@ -25,24 +25,46 @@
             </div>
             <button id="lookup" class="button is-primary" onclick="return false;">Submit</button>
         </form>
-        <div class="chat address">
+        <div class="chat container">
             <h2 id="address"></h2>
-            <ul id="messages"></ul>
+            <h3 id="postode"></h3>
+            <article id="messages" class="message"></article>
             <form action="">
-            <input id="m" autocomplete="off" /><button>Send</button>
+            <div class="field has-addons">
+                <label class="label"></label>
+                <p class="control">
+                    <input id="m" autocomplete="off" class="input shoutbox" type="text" placeholder="Type your shout here.">
+                </p>
+                <p class="control">
+                    <a class="button is-info">
+                    Send
+                    </a>
+                </p>
+            </div>
+            <p class="shoutbox-help is-danger hide">Please enter a message</p>
             </form>
             <script src="/socket.io/socket.io.js"></script>
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>
             $(function () {
+                $.get( "/:postcode", function(data) {
+                    postcode = data.postcode;
+                    alert(postcode);
+                });
                 var socket = io();
                 $('form').submit(function(){
-                socket.emit('chat message', $('#m').val());
-                $('#m').val('');
-                return false;
+                    socket.emit('chat message', $('#m').val(), $('#postode').text());
+                    $('#m').val('');
+                    return false;
                 });
                 socket.on('chat message', function(msg){
-                $('#messages').append($('<li>').text(msg));
+                    if(msg){
+                        $('.shoutbox-help').addClass('hide');
+                        $('#messages').append($('<div class="message-body">').text(msg + new Date()));
+                    } else {
+                        $('.shoutbox').addClass('is-danger');
+                        $('.shoutbox-help').removeClass('hide');
+                    }
                 });
             });
             </script>

@@ -3,17 +3,11 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : 'hedgehog123',
+  dateStrings:true,
   database : 'gg'
 });
 
 connection.connect();
-
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-  if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
-});
-
-connection.end();
 
 var app = require('express')();
 var http = require('http').Server(app);
@@ -27,9 +21,35 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
+  socket.on('chat message', function(msg, postcode){
+    if(msg && postcode){
+      io.emit('chat message', msg, postcode);
+      var sql = mysql.format("INSERT INTO `messages`(`postcode`, `message`) VALUES (?, ?)", [postcode, msg]);
+      connection.query(sql, function (error, results, fields) {
+        if (error) throw error;
+          console.log('Added');
+      });
+    } else {
+      console.log("Postcode or Message Empty");
+    }
   });
+});
+
+app.get('/checkmessages', function(req, res){
+    var data = {
+        postcode: req.query.postcode
+    };
+    var sql = mysql.format("SELECT * FROM gg.messages WHERE postcode = ?", [data.postcode]);
+    connection.query(sql, function (error, results, fields) {
+      if (error) throw error;
+      res.send(results);
+    });
+  });
+
+app.get('/:postcode', function(req, res){
+    var postcode = req.params;
+    res.send(postcode);
+    //res.sendFile(__dirname + '/index.html');
 });
 
 http.listen(3000, function(){
