@@ -12,7 +12,7 @@ connection.connect();
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var express = require('express'); 
+var express = require('express');
 
 app.use(express.static('public'))
 

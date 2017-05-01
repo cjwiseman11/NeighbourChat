@@ -2,13 +2,13 @@ $(function(){
     $('#lookup').on("click", function(){
         $('#messages').html("");
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
-        $.getJSON("https://api.getaddress.io/v2/uk/" + postcode + "?api-key=lq-IdUHPgkqRr__lrbjvjA8429", function(data) {
-        //$.getJSON("https://api.postcodes.io/postcodes/" + postcode, function(data) {
+        //$.getJSON("https://api.getaddress.io/v2/uk/" + postcode + "?api-key=lq-IdUHPgkqRr__lrbjvjA8429", function(data) {
+        $.getJSON("https://api.postcodes.io/postcodes/" + postcode, function(data) {
             console.log( "success" );
         })
         .done(function(data) {
-            var string = data.Addresses[0];
-            //var string = data.result.parish;
+            //var string = data.Addresses[0];
+            var string = data.result.parish;
             var nonum = string.replace(/\d+/g, '');
             var nocomma = nonum.replace(/ ,/g , "");
             $('#address').text("Shouting to " + nocomma);
