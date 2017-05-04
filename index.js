@@ -1,10 +1,10 @@
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'us-cdbr-iron-east-03.cleardb.net',
-  user     : 'b1ef235c0546a2',
-  password : '1ea8cca1',
+  host     : 'localhost',
+  user     : 'root',
+  password : 'hedgehog123',
   dateStrings:true,
-  database : 'heroku_d45e6afc8d7e7bc'
+  database : 'gg'
 });
 
 connection.connect();
@@ -52,7 +52,7 @@ app.get('/:postcode', function(req, res){
     //res.sendFile(__dirname + '/index.html');
 });
 
-http.listen(process.env.PORT || 3000, function(){
+http.listen(3000, function(){
   console.log('listening on *:3000');
 });
 
