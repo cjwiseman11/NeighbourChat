@@ -4,7 +4,7 @@ var connection = mysql.createConnection({
   user     : 'b1ef235c0546a2',
   password : '1ea8cca1',
   dateStrings:true,
-  database : 'gg'
+  database : 'heroku_d45e6afc8d7e7bc'
 });
 
 connection.connect();
