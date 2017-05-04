@@ -28,9 +28,8 @@
         <div class="chat container">
             <h2 id="address"></h2>
             <h3 id="postode"></h3>
-            <article id="messages" class="message"></article>
             <form action="">
-            <div class="field has-addons">
+            <div class="field has-addons shoutbox-area is-hidden">
                 <label class="label"></label>
                 <p class="control">
                     <input id="m" autocomplete="off" class="input shoutbox" type="text" placeholder="Type your shout here.">
@@ -43,6 +42,7 @@
             </div>
             <p class="shoutbox-help is-danger hide">Please enter a message</p>
             </form>
+            <article id="messages" class="message"></article>
             <script src="/socket.io/socket.io.js"></script>
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>
@@ -63,7 +63,7 @@
                         var x = (new Date()).getTimezoneOffset() * 60000; 
                         var localISOTime = (new Date(Date.now() - x)).toISOString().slice(0,19).replace('T', ' ');;    
                         $('.shoutbox-help').addClass('hide');
-                        $('#messages').append($('<div class="message-body">').text(msg + localISOTime));
+                        $('#messages').prepend($('<div class="message-body">' + msg + '<div class="timestamp">' + localISOTime + '</div></div>'));
                     } else {
                         $('.shoutbox').addClass('is-danger');
                         $('.shoutbox-help').removeClass('hide');

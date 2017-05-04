@@ -1,6 +1,7 @@
 $(function(){
     $('#lookup').on("click", function(){
         $('#messages').html("");
+        $('.shoutbox-area').addClass("is-hidden");
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
         //$.getJSON("https://api.getaddress.io/v2/uk/" + postcode + "?api-key=lq-IdUHPgkqRr__lrbjvjA8429", function(data) {
         $.getJSON("https://api.postcodes.io/postcodes/" + postcode, function(data) {
@@ -13,11 +14,13 @@ $(function(){
             var nocomma = nonum.replace(/ ,/g , "");
             $('#address').text("Shouting to " + nocomma);
             $('#postode').text(postcode);
+            $('.shoutbox-area').removeClass("is-hidden");
             $.get('/checkmessages?postcode=' + postcode, function(results) {
                 for (var key in results) {
                     if (results.hasOwnProperty(key)) {
                         var val = results[key];
-                        $('#messages').append($('<div class="message-body">').text(val.message + val.timeposted));
+                        $('#messages').prepend($('<div class="message-body">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div>'));
+
                     }
                 }
             });
