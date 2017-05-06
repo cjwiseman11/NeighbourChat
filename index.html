@@ -13,21 +13,35 @@
     <script src="/js/lookup.js"></script>
 </head>
 <body>
-    <div class="content container">
-        <h1>Neighbour Shout
-        <small>Shout to (or at) your neighbours!</small></h1>
-        <form id="#postcode_lookup">
-            <div class="field">
-                <label class="label">Postcode</label>
-                <p class="control">
-                    <input class="pcinput input" type="text" placeholder="Text input">
-                </p>
+    <div class="content hero is-info">
+        <div class="container hero-body is-vcentered">
+            <div class="columns is-vcentered">
+                <div class="column is-one-third is-left">
+                    <h1 class="title">Neighbour Shout</h1>
+                    <p class="subtitle">Shout to (or at) your neighbours!</p>
+                </div>
+                <div class="column">
+                    <div class="is-hidden results">
+                        <p id="address" class="title is-small is-spaced"></p>
+                        <p class="subtitle"><span id="postcode"></span> <span><a id="reset" class="button is-small is-outlined is-white"><em>Change</em></a></p>
+                    </div>
+                    <form id="postcode_lookup">
+                        <p>Enter your postcode below:</p>
+                        <div class="field is-grouped">
+                            <p class="control has-icons-left is-expanded">
+                                <input class="pcinput input" type="text" placeholder="Text input">
+                            </p>
+                            <p class="control">
+                                <button id="lookup" class="button is-white is-outlined" onclick="return false;">Submit</button>
+                            </p>    
+                        </div>
+                    </form>
+                </div>
             </div>
-            <button id="lookup" class="button is-primary" onclick="return false;">Submit</button>
-        </form>
+        </div>
+    </div>
+    <div class="something">
         <div class="chat container">
-            <h2 id="address"></h2>
-            <h3 id="postode"></h3>
             <form action="">
             <div class="field has-addons shoutbox-area is-hidden">
                 <label class="label"></label>
@@ -47,10 +61,10 @@
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>
             $(function () {
-                $.get( "/:postcode", function(data) {
-                    postcode = data.postcode;
-                    alert(postcode);
-                });
+                var postcode = window.location.pathname.replace("/","");
+                if(postcode){
+                    
+                }
                 var socket = io();
                 $('form').submit(function(){
                     socket.emit('chat message', $('#m').val(), $('#postode').text());

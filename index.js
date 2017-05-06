@@ -48,8 +48,7 @@ app.get('/checkmessages', function(req, res){
 
 app.get('/:postcode', function(req, res){
     var postcode = req.params;
-    res.send(postcode);
-    //res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 http.listen(3000, function(){
