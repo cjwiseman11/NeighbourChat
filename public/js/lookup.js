@@ -1,7 +1,8 @@
 $(function(){
+    var scriptLoaded = false;
     $('#lookup').on("click", function(){
         $('#messages').html("");
-        $('.shoutbox-area').addClass("is-hidden");
+        $('.chat-section').addClass("is-hidden");
         $(this).addClass('is-loading');
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
         //$.getJSON("https://api.getaddress.io/v2/uk/" + postcode + "?api-key=lq-IdUHPgkqRr__lrbjvjA8429", function(data) {
@@ -11,19 +12,28 @@ $(function(){
         .done(function(data) {
             $('#postcode_lookup').addClass('is-hidden');
             $('.results').removeClass('is-hidden');
+            $('.no-postcode > p > em').addClass("is-hidden");
+            lati = data.result.latitude;
+            lngi = data.result.longitude;
+            //getMapLoc(data.result.latitude,data.result.longitude);
             //var string = data.Addresses[0];
             var string = data.result.parish;
             var nonum = string.replace(/\d+/g, '');
             var nocomma = nonum.replace(/ ,/g , "");
             $('#address').text("Shouting to " + nocomma);
             $('#postcode').html("<strong>" + postcode.toUpperCase() + "</strong>");
-            $('.shoutbox-area').removeClass("is-hidden");
-
+            $('.chat-section').removeClass("is-hidden");
+            if(!scriptLoaded){
+                $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw&callback=initMap");
+                scriptLoaded = true;
+            } else {
+                initMap();
+            }
             $.get('/checkmessages?postcode=' + postcode, function(results) {
                 for (var key in results) {
                     if (results.hasOwnProperty(key)) {
                         var val = results[key];
-                        $('#messages').prepend($('<div class="message-body">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div>'));
+                        $('#messages').prepend($('<div class="message-body message is-dark">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div>'));
 
                     }
                 }
@@ -32,6 +42,8 @@ $(function(){
         })
         .fail(function() {
             $('#messages').text("Cannot find address. Please try again");
+            $('.pcinput').addClass('is-danger');
+            $('.help').removeClass('is-hidden');
             console.log( "Fail" );
         })
         .always(function() {
@@ -41,12 +53,14 @@ $(function(){
     });
     $('#reset').on("click", function(){
         $('#messages').html("");
-        $('.shoutbox-area').addClass("is-hidden");
+        $('.chat-section').addClass("is-hidden");
         $('#postcode_lookup').removeClass('is-hidden');
         $('.results').addClass('is-hidden');
         $('#address').text("");
         $('#postcode').html("");
-        $('.shoutbox-area').addClass("is-hidden");
+        $('.no-postcode > p > em').removeClass("is-hidden");
+        $('.pcinput').removeClass('is-danger');
+        $('.help').addClass('is-hidden');
     });
 });
 

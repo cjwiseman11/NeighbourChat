@@ -3,6 +3,18 @@
   display: none;
 }
 
+.no-postcode > p {
+  color: #b3b3b3;
+}
+
+#map{
+    height: 400px;
+    width: 100%;
+}
+
+.message-body{
+  margin-top: 1em;
+}
 
 
 /*! bulma.io v0.4.0 | MIT License | github.com/jgthms/bulma */

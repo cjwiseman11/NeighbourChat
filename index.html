@@ -29,45 +29,69 @@
                         <p>Enter your postcode below:</p>
                         <div class="field is-grouped">
                             <p class="control has-icons-left is-expanded">
-                                <input class="pcinput input" type="text" placeholder="Text input">
+                                <input class="pcinput input" type="text" placeholder="Enter Postcode">
                             </p>
                             <p class="control">
                                 <button id="lookup" class="button is-white is-outlined" onclick="return false;">Submit</button>
                             </p>    
                         </div>
+                        <p class="help is-danger is-hidden">That postcode was invalid.</p>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <div class="something">
-        <div class="chat container">
-            <form action="">
-            <div class="field has-addons shoutbox-area is-hidden">
-                <label class="label"></label>
-                <p class="control">
-                    <input id="m" autocomplete="off" class="input shoutbox" type="text" placeholder="Type your shout here.">
-                </p>
-                <p class="control">
-                    <a class="button is-info">
-                    Send
-                    </a>
-                </p>
+    <div class="something container">
+        <div class="no-postcode is-fullwidth has-text-centered">
+            <p class="title"><em>Type in a postcode to see messages.</em></p>
+        </div>
+        <div class="chat-section columns is-hidden">
+            <div class="column">
+                <form action="">
+                <div class="field is-grouped shoutbox-area">
+                    <label class="label"></label>
+                    <p class="control has-icons-left is-expanded">
+                        <input id="m" autocomplete="off" class="input shoutbox" type="text" placeholder="Type your shout here.">
+                    </p>
+                    <p class="control">
+                        <a class="button is-primary">Send</a>
+                    </p>
+                </div>
+                </form>
+                <article id="messages"></article>
             </div>
-            <p class="shoutbox-help is-danger hide">Please enter a message</p>
-            </form>
-            <article id="messages" class="message"></article>
+            <div id="maps" class="column">
+                <div id="map"></div>
+                <script>
+                function initMap() {
+                    var marker = {lat: lati, lng: lngi};
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 16,
+                        center: marker
+                    });
+                    var marker = new google.maps.Marker({
+                        position: marker,
+                        map: map
+                    });
+                    google.maps.event.trigger(map, 'resize');
+                    map.setCenter(marker.getPosition());
+                    
+                }
+                </script>
+            </div>
             <script src="/socket.io/socket.io.js"></script>
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>
+            var lngi;
+            var lati;
             $(function () {
                 var postcode = window.location.pathname.replace("/","");
                 if(postcode){
-                    
+
                 }
                 var socket = io();
                 $('form').submit(function(){
-                    socket.emit('chat message', $('#m').val(), $('#postode').text());
+                    socket.emit('chat message', $('#m').val(), $('#postcode').text());
                     $('#m').val('');
                     return false;
                 });
@@ -77,7 +101,7 @@
                         var x = (new Date()).getTimezoneOffset() * 60000; 
                         var localISOTime = (new Date(Date.now() - x)).toISOString().slice(0,19).replace('T', ' ');;    
                         $('.shoutbox-help').addClass('hide');
-                        $('#messages').prepend($('<div class="message-body">' + msg + '<div class="timestamp">' + localISOTime + '</div></div>'));
+                        $('#messages').prepend($('<div class="message-body message is-dark">' + msg + '<div class="timestamp">' + localISOTime + '</div></div>'));
                     } else {
                         $('.shoutbox').addClass('is-danger');
                         $('.shoutbox-help').removeClass('hide');
