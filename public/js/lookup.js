@@ -5,19 +5,20 @@ $(function(){
         $('.chat-section').addClass("is-hidden");
         $(this).addClass('is-loading');
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
-        //$.getJSON("https://api.getaddress.io/v2/uk/" + postcode + "?api-key=lq-IdUHPgkqRr__lrbjvjA8429", function(data) {
-        $.getJSON("https://api.postcodes.io/postcodes/" + postcode, function(data) {
+        $.getJSON("https://api.getaddress.io/v2/uk/" + postcode + "?api-key=lq-IdUHPgkqRr__lrbjvjA8429", function(data) {
+        //$.getJSON("https://api.postcodes.io/postcodes/" + postcode, function(data) {
             console.log( "success" );
         })
         .done(function(data) {
             $('#postcode_lookup').addClass('is-hidden');
             $('.results').removeClass('is-hidden');
             $('.no-postcode > p > em').addClass("is-hidden");
-            lati = data.result.latitude;
-            lngi = data.result.longitude;
-            //getMapLoc(data.result.latitude,data.result.longitude);
-            //var string = data.Addresses[0];
-            var string = data.result.parish;
+            //lati = data.result.latitude;
+            //lngi = data.result.longitude;
+            lati = data.Latitude;
+            lngi = data.Longitude;
+            var string = data.Addresses[0];
+            //var string = data.result.parish;
             var nonum = string.replace(/\d+/g, '');
             var nocomma = nonum.replace(/ ,/g , "");
             $('#address').text("Shouting to " + nocomma);
@@ -33,7 +34,7 @@ $(function(){
                 for (var key in results) {
                     if (results.hasOwnProperty(key)) {
                         var val = results[key];
-                        $('#messages').prepend($('<div class="message-body message is-dark">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div>'));
+                        $('#messages').prepend($('<div class="message"><div class="message-body">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div></div>'));
 
                     }
                 }

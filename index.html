@@ -101,7 +101,7 @@
                         var x = (new Date()).getTimezoneOffset() * 60000; 
                         var localISOTime = (new Date(Date.now() - x)).toISOString().slice(0,19).replace('T', ' ');;    
                         $('.shoutbox-help').addClass('hide');
-                        $('#messages').prepend($('<div class="message-body message is-dark">' + msg + '<div class="timestamp">' + localISOTime + '</div></div>'));
+                        $('#messages').prepend($('<div class="message is-info"><div class="message-body">' + msg + '<div class="timestamp">' + localISOTime + '</div></div></div>'));
                     } else {
                         $('.shoutbox').addClass('is-danger');
                         $('.shoutbox-help').removeClass('hide');
