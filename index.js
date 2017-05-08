@@ -8,7 +8,7 @@ var mysql      = require('mysql');
 });*/
 var connection = mysql.createConnection({
   host     : 'us-cdbr-iron-east-03.cleardb.net',
-  user     : 'b1ef235c0546a2',
+  user     : 'ba1696dbf957f3',
   password : '5e1dad33',
   dateStrings:true,
   database : 'gg'
