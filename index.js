@@ -9,7 +9,7 @@ var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'eu-cdbr-azure-west-d.cloudapp.net',
   user     : 'ba1696dbf957f3',
-  password : '5e1dad33',
+  password : '',
   dateStrings:true,
   database : 'gg'
 });
