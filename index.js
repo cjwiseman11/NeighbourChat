@@ -47,8 +47,8 @@ app.get('/checkmessages', function(req, res){
     var sql = mysql.format("SELECT * FROM gg.messages WHERE postcode = ?", [data.postcode]);
     connection.query(sql, function (error, results, fields) {
       if(error){
-        throw error;
         res.send("fail");
+        console.log(error);
       } else if(results.length > 0) {
         res.send(results);
       } else {
