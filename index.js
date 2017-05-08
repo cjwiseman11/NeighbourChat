@@ -12,10 +12,6 @@ var connection = mysql.createConnection({
   database : config.database.db
 });
 
-
-
-connection.connect();
-
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -47,9 +43,8 @@ app.get('/checkmessages', function(req, res){
     var data = {
         postcode: req.query.postcode
     };
-    if(connection.state === 'disconnected'){
-      res.send("fail");
-    }
+
+    connection.connect();
     var sql = mysql.format("SELECT * FROM gg.messages WHERE postcode = ?", [data.postcode]);
     connection.query(sql, function (error, results, fields) {
       if(error){
@@ -60,7 +55,7 @@ app.get('/checkmessages', function(req, res){
       } else {
         res.send("none");
       }
-
+      connection.end();
     });
   });
 
