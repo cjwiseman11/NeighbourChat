@@ -30,7 +30,8 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   socket.on('chat message', function(msg, postcode){
     if(msg && postcode){
-      io.emit('chat message', msg, postcode);
+      socket.join(postcode);
+      io.sockets.in(postcode).emit('chat message', msg, postcode);
       var sql = mysql.format("INSERT INTO `messages`(`postcode`, `message`) VALUES (?, ?)", [postcode, msg]);
       connection.query(sql, function (error, results, fields) {
         if (error) throw error;
