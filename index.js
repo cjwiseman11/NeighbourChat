@@ -47,10 +47,20 @@ app.get('/checkmessages', function(req, res){
     var data = {
         postcode: req.query.postcode
     };
+    if(connection.state === 'disconnected'){
+      res.send("fail");
+    }
     var sql = mysql.format("SELECT * FROM gg.messages WHERE postcode = ?", [data.postcode]);
     connection.query(sql, function (error, results, fields) {
-      if (error) throw error;
-      res.send(results);
+      if(error){
+        throw error;
+        res.send("fail");
+      } else if(results.length > 0) {
+        res.send(results);
+      } else {
+        res.send("none");
+      }
+
     });
   });
 

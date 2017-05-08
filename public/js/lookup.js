@@ -25,12 +25,18 @@ $(function(){
                 initMap();
             }
             $.get('/checkmessages?postcode=' + postcode, function(results) {
-                for (var key in results) {
-                    if (results.hasOwnProperty(key)) {
-                        var val = results[key];
-                        $('#messages').prepend($('<div class="message"><div class="message-body dont-break-out">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div></div>'));
+                if(results == "fail"){
+                    $('#messages').prepend('<div class="message is-danger"><div class="message-body has-text-centered">Messages failed to load for some reason. Please try again.</div></div>')
+                } else if(results == "none") {
+                    $('#messages').prepend('<div class="message"><div class="message-body has-text-centered">Be first to shout here :)</div></div>')
+                } else {
+                    for (var key in results) {
+                        if (results.hasOwnProperty(key)) {
+                            var val = results[key];
+                            $('#messages').prepend($('<div class="message"><div class="message-body dont-break-out">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div></div>'));
 
-                    }
+                        }
+                    } 
                 }
             });
             console.log( "Found" );
