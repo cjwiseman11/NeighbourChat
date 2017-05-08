@@ -7,7 +7,7 @@ var mysql      = require('mysql');
   database : 'gg'
 });*/
 var connection = mysql.createConnection({
-  host     : 'us-cdbr-iron-east-03.cleardb.net',
+  host     : 'eu-cdbr-azure-west-d.cloudapp.net',
   user     : 'ba1696dbf957f3',
   password : '5e1dad33',
   dateStrings:true,
