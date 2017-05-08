@@ -28,7 +28,7 @@ $(function(){
                 for (var key in results) {
                     if (results.hasOwnProperty(key)) {
                         var val = results[key];
-                        $('#messages').prepend($('<div class="message"><div class="message-body">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div></div>'));
+                        $('#messages').prepend($('<div class="message"><div class="message-body dont-break-out">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div></div>'));
 
                     }
                 }
