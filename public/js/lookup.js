@@ -25,7 +25,9 @@ $(function(){
                 } else {
                     initMap();
                 }
+                $('#messages').prepend('<div class="loading-msg message is-warning"><div class="message-body has-text-centered">Loading messages...</div></div>')
                 $.get('/checkmessages?postcode=' + postcode, function(results) {
+                    $('.loading-msg').remove();
                     if(results == "fail"){
                         $('#messages').prepend('<div class="message is-danger"><div class="message-body has-text-centered">Messages failed to load for some reason. Please try again.</div></div>')
                     } else if(results == "none") {
