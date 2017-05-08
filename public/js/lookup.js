@@ -5,23 +5,17 @@ $(function(){
         $('.chat-section').addClass("is-hidden");
         $(this).addClass('is-loading');
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
-        $.getJSON("https://api.getaddress.io/v2/uk/" + postcode + "?api-key=lq-IdUHPgkqRr__lrbjvjA8429", function(data) {
-        //$.getJSON("https://api.postcodes.io/postcodes/" + postcode, function(data) {
+        $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + postcode + "&key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw", function(data) {
             console.log( "success" );
         })
         .done(function(data) {
             $('#postcode_lookup').addClass('is-hidden');
             $('.results').removeClass('is-hidden');
             $('.no-postcode > p > em').addClass("is-hidden");
-            //lati = data.result.latitude;
-            //lngi = data.result.longitude;
-            lati = data.Latitude;
-            lngi = data.Longitude;
-            var string = data.Addresses[0];
-            //var string = data.result.parish;
-            var nonum = string.replace(/\d+/g, '');
-            var nocomma = nonum.replace(/ ,/g , "");
-            $('#address').text("Shouting to " + nocomma);
+            lati = data.results[0].geometry.location.lat;
+            lngi = data.results[0].geometry.location.lng;
+            var string = data.results[0].formatted_address;
+            $('#address').text("Shouting to " + string);
             $('#postcode').html("<strong>" + postcode.toUpperCase() + "</strong>");
             $('.chat-section').removeClass("is-hidden");
             if(!scriptLoaded){
