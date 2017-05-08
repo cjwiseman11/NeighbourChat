@@ -1,18 +1,18 @@
 var mysql      = require('mysql');
-/*var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'hedgehog123',
-  dateStrings:true,
-  database : 'gg'
-});*/
+
+var env = process.env.NODE_ENV || 'development';
+console.log(env);
+var config = require('../config')[env];
+
 var connection = mysql.createConnection({
-  host     : 'eu-cdbr-azure-west-d.cloudapp.net',
-  user     : 'ba1696dbf957f3',
-  password : '',
+  host     : config.database.host,
+  user     : config.database.user,
+  password : config.database.pass,
   dateStrings:true,
-  database : 'gg'
+  database : config.database.db
 });
+
+
 
 connection.connect();
 
@@ -58,7 +58,8 @@ app.get('/:postcode', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
-http.listen(process.env.port || 3000, function(){
-  console.log('listening on *:3000');
+var port = process.env.port || 3000;
+http.listen(port, function(){
+  console.log('listening on *:' + port);
 });
 
