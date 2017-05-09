@@ -49,13 +49,14 @@ app.get('/checkmessages', function(req, res){
       if(error){
         res.send("fail");
         console.log(error);
+        return;
       } else if(results.length > 0) {
         res.send(results);
       } else {
         res.send("none");
       }
+      connection.end();
     });
-    connection.release();
   });
 
 app.get('/:postcode', function(req, res){
