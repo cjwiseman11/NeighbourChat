@@ -1,10 +1,10 @@
-var mysql      = require('mysql');
-
 var env = process.env.NODE_ENV || 'development';
 console.log(env);
 var config = require('../config')[env];
 
-var connection = mysql.createConnection({
+var mysql      = require('mysql');
+var pool = mysql.createPool({
+  connectionLimit: 4,
   host     : config.database.host,
   user     : config.database.user,
   password : config.database.pass,
@@ -44,19 +44,21 @@ app.get('/checkmessages', function(req, res){
         postcode: req.query.postcode
     };
 
-    var sql = mysql.format("SELECT * FROM gg.messages WHERE postcode = ?", [data.postcode]);
-    connection.query(sql, function (error, results, fields) {
-      if(error){
-        res.send("fail");
-        console.log(error);
-        return;
-      } else if(results.length > 0) {
-        res.send(results);
-      } else {
-        res.send("none");
-      }
+    pool.getConnection(function(err, connection) {
+        var sql = mysql.format("SELECT * FROM gg.messages WHERE postcode = ?", [data.postcode]);
+        connection.query(sql, function (error, results, fields) {
+          connection.release();
+          if(error){
+            res.send("fail");
+            throw error;
+          } else if(results.length > 0) {
+            res.send(results);
+          } else {
+            res.send("none");
+          }
+        });
     });
-  });
+});
 
 app.get('/:postcode', function(req, res){
     var postcode = req.params;
