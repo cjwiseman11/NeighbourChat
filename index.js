@@ -55,7 +55,6 @@ app.get('/checkmessages', function(req, res){
       } else {
         res.send("none");
       }
-      connection.end();
     });
   });
 
