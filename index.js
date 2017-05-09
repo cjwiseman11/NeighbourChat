@@ -28,10 +28,15 @@ io.on('connection', function(socket){
     if(msg && postcode){
       socket.join(postcode);
       io.sockets.in(postcode).emit('chat message', msg, postcode);
-      var sql = mysql.format("INSERT INTO `messages`(`postcode`, `message`) VALUES (?, ?)", [postcode, msg]);
-      connection.query(sql, function (error, results, fields) {
-        if (error) throw error;
-          console.log('Added');
+      pool.getConnection(function(err, connection) {
+        var sql = mysql.format("INSERT INTO `messages`(`postcode`, `message`) VALUES (?, ?)", [postcode, msg]);
+        connection.query(sql, function (error, results, fields) {
+          connection.release();
+          if(error){
+            throw error;
+          }
+        });
+        console.log('Added');
       });
     } else {
       console.log("Postcode or Message Empty");
