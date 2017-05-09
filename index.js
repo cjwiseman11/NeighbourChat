@@ -55,6 +55,7 @@ app.get('/checkmessages', function(req, res){
         res.send("none");
       }
     });
+    connection.release();
   });
 
 app.get('/:postcode', function(req, res){
