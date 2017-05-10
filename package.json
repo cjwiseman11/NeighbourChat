@@ -1,7 +1,7 @@
 {
   "name": "Naybur",
   "version": "0.1.0",
-  "description": "my first socket.io app",
+  "description": "Naybur Shout",
   "dependencies": {
     "express": "^4.15.2",
     "moment": "^2.18.1",
