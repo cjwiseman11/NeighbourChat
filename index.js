@@ -12,15 +12,10 @@ var pool = mysql.createPool({
   database : config.database.db
 });
 
-console.log("got here");
 var http = require('http').Server(app);
-console.log("got here1");
 var io = require('socket.io')(http);
-console.log("got here2");
 var express = require('express');
-console.log("got here2");
 var app = express();
-console.log("got here3");
 
 app.use(express.static('public'));
 
