@@ -7,6 +7,7 @@ $(function(){
         lngi = results.lngi;
         setPostcode(postcode, string);
     }
+    $('.postcode-area').removeClass("is-hidden");
     var scriptLoaded = false;
     $('#lookup').on("click", function(){
         $('#messages').html("");
