@@ -1,5 +1,9 @@
 $(function(){
-    if (!(localStorage.getItem("nayburResults") === null)) {
+    var pathname = window.location.pathname.replace("/","");
+    if(pathname != ""){
+        $('.pcinput').val(pathname);
+        searchPostCode(pathname);
+    } else if (!(localStorage.getItem("nayburResults") === null)) {
         var results = JSON.parse(localStorage.getItem('nayburResults'));
         var postcode = results.postcode;
         var string = results.string;
@@ -14,6 +18,22 @@ $(function(){
         $('.chat-section').addClass("is-hidden");
         $(this).addClass('is-loading');
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
+        searchPostCode(postcode);
+    });
+    $('#reset').on("click", function(){
+        $('#messages').html("");
+        $('.chat-section').addClass("is-hidden");
+        $('#postcode_lookup').removeClass('is-hidden');
+        $('.results').addClass('is-hidden');
+        $('#address').text("");
+        $('#postcode').html("");
+        $('.no-postcode > p > em').removeClass("is-hidden");
+        $('.pcinput').removeClass('is-danger');
+        $('.help').addClass('is-hidden');
+        localStorage.removeItem('nayburResults');
+    });
+
+    function searchPostCode(postcode){
         $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + postcode + "&key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw&components=country%3aGB", function(data) {
             console.log( "success" );
         })
@@ -47,19 +67,7 @@ $(function(){
             $('#lookup').removeClass('is-loading');
             console.log( "Finished" );
         });
-    });
-    $('#reset').on("click", function(){
-        $('#messages').html("");
-        $('.chat-section').addClass("is-hidden");
-        $('#postcode_lookup').removeClass('is-hidden');
-        $('.results').addClass('is-hidden');
-        $('#address').text("");
-        $('#postcode').html("");
-        $('.no-postcode > p > em').removeClass("is-hidden");
-        $('.pcinput').removeClass('is-danger');
-        $('.help').addClass('is-hidden');
-        localStorage.removeItem('nayburResults');
-    });
+    }
     
     function getMessages(postcode){
         $('#messages').prepend('<div class="loading-msg message is-warning"><div class="message-body has-text-centered">Loading messages...</div></div>')
