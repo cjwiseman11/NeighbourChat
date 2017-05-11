@@ -14,11 +14,12 @@ $(function(){
     $('.postcode-area').removeClass("is-hidden");
     var scriptLoaded = false;
     $('#lookup').on("click", function(){
+        var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
         $('#messages').html("");
         $('.chat-section').addClass("is-hidden");
         $(this).addClass('is-loading');
-        var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
-        searchPostCode(postcode);
+        var updatedPostcode = searchPostCode(postcode);
+        localStorage.setItem('nayburResults', JSON.stringify({ 'lati': lati, 'lngi': lngi, 'postcode': updatedPostcode, 'string': string }));
     });
     $('#reset').on("click", function(){
         $('#messages').html("");
@@ -48,7 +49,6 @@ $(function(){
                     lati = data.results[0].geometry.location.lat;
                     lngi = data.results[0].geometry.location.lng;
                     setPostcode(postcode, string);
-                    localStorage.setItem('nayburResults', JSON.stringify({ 'lati': lati, 'lngi': lngi, 'postcode': postcode, 'string': string }));
                     console.log( "Found" );
                 } else {
                     lookupFail();
@@ -67,6 +67,7 @@ $(function(){
             $('#lookup').removeClass('is-loading');
             console.log( "Finished" );
         });
+        return postcode;
     }
     
     function getMessages(postcode){
