@@ -5,44 +5,53 @@ $(function(){
         $('.chat-section').addClass("is-hidden");
         $(this).addClass('is-loading');
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
-        $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + postcode + "&key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw", function(data) {
+        $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + postcode + "&key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw&components=country%3aGB", function(data) {
             console.log( "success" );
         })
         .done(function(data) {
             if(data.results.length > 0){
-                $('#postcode_lookup').addClass('is-hidden');
-                $('.results').removeClass('is-hidden');
-                $('.no-postcode > p > em').addClass("is-hidden");
-                lati = data.results[0].geometry.location.lat;
-                lngi = data.results[0].geometry.location.lng;
-                var string = data.results[0].formatted_address;
-                $('#address').text("Shouting to " + string);
-                $('#postcode').html("<strong>" + postcode.toUpperCase() + "</strong>");
-                $('.chat-section').removeClass("is-hidden");
-                if(!scriptLoaded){
-                    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw&callback=initMap");
-                    scriptLoaded = true;
-                } else {
-                    initMap();
-                }
-                $('#messages').prepend('<div class="loading-msg message is-warning"><div class="message-body has-text-centered">Loading messages...</div></div>')
-                $.get('/checkmessages?postcode=' + postcode, function(results) {
-                    $('.loading-msg').remove();
-                    if(results == "fail"){
-                        $('#messages').prepend('<div class="message is-danger"><div class="message-body has-text-centered">Messages failed to load for some reason. Please try again.</div></div>')
-                    } else if(results == "none") {
-                        $('#messages').prepend('<div class="message"><div class="message-body has-text-centered">Be first to shout here :)</div></div>')
+                var address_components = data.results[0].address_components;
+                var components={}; 
+                jQuery.each(address_components, function(k,v1) {jQuery.each(v1.types, function(k2, v2){components[v2]=v1.long_name});});
+                if(components.postal_code){
+                    postcode = components.postal_code;
+                    $('#postcode_lookup').addClass('is-hidden');
+                    $('.results').removeClass('is-hidden');
+                    $('.no-postcode > p > em').addClass("is-hidden");
+                    lati = data.results[0].geometry.location.lat;
+                    lngi = data.results[0].geometry.location.lng;
+                    var string = data.results[0].formatted_address.split(postcode,1)[0].replace(components.street_number + " ", "");
+                    $('#address').text("Shouting to " + string);
+                    $('#postcode').html("<strong>" + postcode.toUpperCase() + "</strong>");
+                    $('.chat-section').removeClass("is-hidden");
+                    if(!scriptLoaded){
+                        $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw&callback=initMap");
+                        scriptLoaded = true;
                     } else {
-                        for (var key in results) {
-                            if (results.hasOwnProperty(key)) {
-                                var val = results[key];
-                                $('#messages').prepend($('<div class="message"><div class="message-body dont-break-out">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div></div>'));
-
-                            }
-                        } 
+                        initMap();
                     }
-                });
-                console.log( "Found" );
+                    $('#messages').prepend('<div class="loading-msg message is-warning"><div class="message-body has-text-centered">Loading messages...</div></div>')
+                    $.get('/checkmessages?postcode=' + postcode, function(results) {
+                        $('.loading-msg').remove();
+                        if(results == "fail"){
+                            $('#messages').prepend('<div class="message is-danger"><div class="message-body has-text-centered">Messages failed to load for some reason. Please try again.</div></div>')
+                        } else if(results == "none") {
+                            $('#messages').prepend('<div class="message"><div class="message-body has-text-centered">Be first to shout here :)</div></div>')
+                        } else {
+                            for (var key in results) {
+                                if (results.hasOwnProperty(key)) {
+                                    var val = results[key];
+                                    $('#messages').prepend($('<div class="message"><div class="message-body dont-break-out">' + val.message + '<div class="timestamp">' + val.timeposted + '</div></div></div>'));
+
+                                }
+                            } 
+                        }
+                    });
+                    console.log( "Found" );
+                } else {
+                    lookupFail();
+                    console.log("No Postcode");
+                }
             } else {
                 lookupFail();
                 console.log("Not Found");
