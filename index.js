@@ -17,6 +17,7 @@ var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+app.use(express.bodyParser());
 app.use(express.static('public'));
 
 app.get('/', function(req, res){
@@ -68,6 +69,22 @@ app.get('/checkmessages', function(req, res){
 app.get('/:postcode', function(req, res){
     var postcode = req.params;
     res.sendFile(__dirname + '/index.html');
+});
+
+app.post('/sendthread', function(req, res){
+    console.log(req.body);
+    /*var sql = mysql.format("INSERT INTO nayburdb.threads (title, body, markerlat, markerlng, markercolour) VALUES (?, ?, ?, ?, ?)", [data.postcode]);
+    connection.query(sql, function (error, results, fields) {
+      connection.release();
+      if(error){
+        res.send("fail");
+        throw error;
+      } else if(results.length > 0) {
+        res.send(results);
+      } else {
+        res.send("none");
+      }
+    });*/
 });
 
 var port = process.env.port || 3000;

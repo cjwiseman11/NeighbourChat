@@ -70,12 +70,50 @@
                 <article id="messages"></article>
             </div>
             <div class="column threads-column">
-                <p>Threads Here</p>
+                <button class="button is-info create-thread">Create Thread</button>
+                <div class="thread-creator is-hidden">
+                    <form id="create-thread-form" action="/sendthread" method="post">
+                        <div class="field">
+                            <p class="control">
+                                <label for="title" class="label">Title</label>
+                                <input id="title" name="title" class="title-input input" type="text" placeholder="Enter Title">
+                            </p>
+                            <p class="control">
+                                <label for="message" class="label">Message</label>
+                                <textarea name="message" class="message-textarea textarea" type="text" placeholder="Enter Message"></textarea>
+                            </p>
+                            <p>Choose colour and click on the map to add marker</p>
+                            <div class="field has-addons">
+                                <p class="control">
+                                    <span class="select">
+                                    <select name="colour-select" id="marker-select">
+                                        <option>None</option>
+                                        <option>Blue</option>
+                                        <option>Green</option>
+                                        <option>Yellow</option>
+                                    </select>
+                                    </span>
+                                <p class="control">
+                                    <input name="mlat" class="input marker-latitude" type="text" placeholder="Latitude">
+                                </p>
+                                <p class="control">
+                                    <input name="mlng" class="input marker-longitude" type="text" placeholder="Longitude">
+                                </p>
+                                </p>
+                            </div>
+                            <p class="control">
+                                <!--<button id="sendthread" class="button is-primary" type="submit">Save</button>-->
+                                <input type="submit" value="Submit">
+                            </p>    
+                        </div>
+                    </form>
+                </div>
             </div>
             <div id="maps" class="column">
                 <div id="map"></div>
                 <script>
                 var map;
+                var usermarker;
                 function initMap() {
                     var marker = {lat: lati, lng: lngi};
                     map = new google.maps.Map(document.getElementById('map'), {
@@ -99,17 +137,25 @@
                 }
 
                 function placeMarker(location) {
-                    var marker = new google.maps.Marker({
-                        position: location, 
-                        map: map,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                    });
+                    if($('#marker-select').val() != 'None'){
+                        $('.marker-latitude').val(location.lat());
+                        $('.marker-longitude').val(location.lng());
+                        if(usermarker){
+                            usermarker.setMap(null);  
+                        }           
+                        usermarker = new google.maps.Marker({
+                            position: location, 
+                            map: map,
+                            icon: 'http://maps.google.com/mapfiles/ms/icons/' + $('#marker-select').val().toLowerCase() +'-dot.png'
+                        });
+                    }
                 }
-                </script>
+     
+            </script>
             </div>
             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script src="/js/lookup.js"></script>
-            <script src="/js/tabs.js"></script>
+            <script src="/js/naybur.js"></script>
             <script src="/socket.io/socket.io.js"></script>
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>

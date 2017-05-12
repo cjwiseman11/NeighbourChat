@@ -6,3 +6,8 @@ $('.tabs a').each(function(){
         $('.' + $(this).text().toLowerCase() + '-column').removeClass('is-hidden');
     });
 });
+
+$('.create-thread').on("click", function(){
+    $('.thread-creator').toggleClass('is-hidden');
+    $(this).text(($(this).text() === 'Create Thread') ? 'Cancel' : 'Create Thread');
+});
