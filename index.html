@@ -64,19 +64,35 @@
             <div id="maps" class="column">
                 <div id="map"></div>
                 <script>
+                var map;
                 function initMap() {
                     var marker = {lat: lati, lng: lngi};
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 16,
-                        center: marker
+                    map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 17,
+                        center: marker,
+                        scrollwheel: false,
+                        navigationControl: false,
+                        mapTypeControl: false,
+                        draggable: false,
+                        zoomControl: false,
+                        disableDoubleClickZoom: true
                     });
                     var marker = new google.maps.Marker({
                         position: marker,
                         map: map
                     });
-                    google.maps.event.trigger(map, 'resize');
                     map.setCenter(marker.getPosition());
-                    
+                    google.maps.event.addListener(map, 'click', function(event) {
+                        placeMarker(event.latLng);
+                    });
+                }
+
+                function placeMarker(location) {
+                    var marker = new google.maps.Marker({
+                        position: location, 
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                    });
                 }
                 </script>
             </div>

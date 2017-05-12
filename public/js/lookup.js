@@ -1,4 +1,5 @@
 $(function(){
+    var scriptLoaded = false;
     var pathname = window.location.pathname.replace("/","");
     if(pathname != ""){
         $('.pcinput').val(pathname);
@@ -12,7 +13,6 @@ $(function(){
         setPostcode(postcode, string);
     }
     $('.postcode-area').removeClass("is-hidden");
-    var scriptLoaded = false;
     $('#lookup').on("click", function(){
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
         $('#messages').html("");
