@@ -9,8 +9,6 @@
 	<title>Neighbour Yo!</title>
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
     <link href="/css/bulma.css" rel="stylesheet">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="/js/lookup.js"></script>
 </head>
 <body>
     <div class="content hero is-info">
@@ -46,8 +44,18 @@
         <div class="no-postcode is-fullwidth has-text-centered">
             <p class="title"><em>Type in a postcode to see messages.</em></p>
         </div>
+        <div class="tabs">
+            <ul>
+                <li class="is-active">
+                    <a>Threads</a>
+                </li>
+                <li>
+                    <a>Chat</a>
+                </li>
+            </ul>
+        </div>
         <div class="chat-section columns is-hidden">
-            <div class="column">
+            <div class="column chat-column is-hidden">
                 <form id="msg-form">
                     <div class="field is-grouped shoutbox-area">
                         <label class="label"></label>
@@ -60,6 +68,9 @@
                     </div>
                 </form>
                 <article id="messages"></article>
+            </div>
+            <div class="column threads-column">
+                <p>Threads Here</p>
             </div>
             <div id="maps" class="column">
                 <div id="map"></div>
@@ -96,6 +107,9 @@
                 }
                 </script>
             </div>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="/js/lookup.js"></script>
+            <script src="/js/tabs.js"></script>
             <script src="/socket.io/socket.io.js"></script>
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>
@@ -133,6 +147,7 @@
             ga('create', 'UA-98753896-1', 'auto');
             ga('send', 'pageview');
             </script>
+
         </div>
     </div>
 </body>
