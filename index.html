@@ -48,16 +48,16 @@
         </div>
         <div class="chat-section columns is-hidden">
             <div class="column">
-                <form action="">
-                <div class="field is-grouped shoutbox-area">
-                    <label class="label"></label>
-                    <p class="control has-icons-left is-expanded">
-                        <input id="m" maxlength="250" autocomplete="off" class="input shoutbox" type="text" placeholder="Type your shout here.">
-                    </p>
-                    <p class="control">
-                        <a class="button is-primary">Send</a>
-                    </p>
-                </div>
+                <form id="msg-form">
+                    <div class="field is-grouped shoutbox-area">
+                        <label class="label"></label>
+                        <p class="control has-icons-left is-expanded">
+                            <input id="m" maxlength="250" autocomplete="off" class="input shoutbox" type="text" placeholder="Type your shout here.">
+                        </p>
+                        <p class="control">
+                            <button id="msg-send" class="button is-primary" onclick="return false;">Send</button>
+                        </p>
+                    </div>
                 </form>
                 <article id="messages"></article>
             </div>
@@ -91,7 +91,7 @@
 
                 }
                 var socket = io();
-                $('form').submit(function(){
+                $('#msg-send').on("click", function(){
                     socket.emit('chat message', $('#m').val(), $('#postcode').text());
                     $('#m').val('');
                     return false;
