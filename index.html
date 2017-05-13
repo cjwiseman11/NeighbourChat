@@ -9,8 +9,6 @@
 	<title>Neighbour Yo!</title>
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
     <link href="/css/bulma.css" rel="stylesheet">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="/js/lookup.js"></script>
 </head>
 <body>
     <div class="content hero is-info">
@@ -46,40 +44,79 @@
         <div class="no-postcode is-fullwidth has-text-centered">
             <p class="title"><em>Type in a postcode to see messages.</em></p>
         </div>
+        <div class="tabs is-hidden">
+            <ul>
+                <li class="is-active">
+                    <a>Threads</a>
+                </li>
+                <li>
+                    <a>Chat</a>
+                </li>
+            </ul>
+        </div>
         <div class="chat-section columns is-hidden">
-            <div class="column">
-                <form action="">
-                <div class="field is-grouped shoutbox-area">
-                    <label class="label"></label>
-                    <p class="control has-icons-left is-expanded">
-                        <input id="m" maxlength="250" autocomplete="off" class="input shoutbox" type="text" placeholder="Type your shout here.">
-                    </p>
-                    <p class="control">
-                        <a class="button is-primary">Send</a>
-                    </p>
-                </div>
+            <div class="column chat-column is-hidden">
+                <form id="msg-form">
+                    <div class="field is-grouped shoutbox-area">
+                        <label class="label"></label>
+                        <p class="control has-icons-left is-expanded">
+                            <input id="m" maxlength="250" autocomplete="off" class="input shoutbox" type="text" placeholder="Type your shout here.">
+                        </p>
+                        <p class="control">
+                            <button id="msg-send" class="button is-primary" onclick="return false;">Send</button>
+                        </p>
+                    </div>
                 </form>
                 <article id="messages"></article>
             </div>
+            <div class="column threads-column">
+                <button class="button is-info create-thread">Create Thread</button>
+                <div class="thread-creator is-hidden">
+                    <form id="create-thread-form" action="/sendthread" method="post">
+                        <input id="threadpostcode" name="threadpostcode" class="is-hidden" type="text">
+                        <div class="field">
+                            <p class="control">
+                                <label for="title" class="label">Title</label>
+                                <input id="title" name="title" class="title-input input" type="text" placeholder="Enter Title">
+                            </p>
+                            <p class="control">
+                                <label for="message" class="label">Message</label>
+                                <textarea name="message" class="message-textarea textarea" type="text" placeholder="Enter Message"></textarea>
+                            </p>
+                            <p>Choose colour and click on the map to add marker</p>
+                            <div class="field has-addons">
+                                <p class="control">
+                                    <span class="select">
+                                    <select name="mcolour" id="marker-select">
+                                        <option>None</option>
+                                        <option>Blue</option>
+                                        <option>Green</option>
+                                        <option>Yellow</option>
+                                    </select>
+                                    </span>
+                                <p class="control">
+                                    <input name="mlat" class="input marker-latitude" type="text" placeholder="Latitude">
+                                </p>
+                                <p class="control">
+                                    <input name="mlng" class="input marker-longitude" type="text" placeholder="Longitude">
+                                </p>
+                                </p>
+                            </div>
+                            <p class="control">
+                                <!--<button id="sendthread" class="button is-primary" type="submit">Save</button>-->
+                                <input type="submit" value="Submit">
+                            </p>    
+                        </div>
+                    </form>
+                </div>
+                <div id="threads"></div>
+            </div>
             <div id="maps" class="column">
                 <div id="map"></div>
-                <script>
-                function initMap() {
-                    var marker = {lat: lati, lng: lngi};
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 16,
-                        center: marker
-                    });
-                    var marker = new google.maps.Marker({
-                        position: marker,
-                        map: map
-                    });
-                    google.maps.event.trigger(map, 'resize');
-                    map.setCenter(marker.getPosition());
-                    
-                }
-                </script>
             </div>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="/js/lookup.js"></script>
+            <script src="/js/naybur.js"></script>
             <script src="/socket.io/socket.io.js"></script>
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>
@@ -91,7 +128,7 @@
 
                 }
                 var socket = io();
-                $('form').submit(function(){
+                $('#msg-send').on("click", function(){
                     socket.emit('chat message', $('#m').val(), $('#postcode').text());
                     $('#m').val('');
                     return false;
@@ -117,6 +154,7 @@
             ga('create', 'UA-98753896-1', 'auto');
             ga('send', 'pageview');
             </script>
+
         </div>
     </div>
 </body>

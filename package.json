@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Naybur Shout",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "moment": "^2.18.1",
     "momentjs": "^2.0.0",
