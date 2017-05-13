@@ -44,7 +44,7 @@
         <div class="no-postcode is-fullwidth has-text-centered">
             <p class="title"><em>Type in a postcode to see messages.</em></p>
         </div>
-        <div class="tabs">
+        <div class="tabs is-hidden">
             <ul>
                 <li class="is-active">
                     <a>Threads</a>
@@ -73,6 +73,7 @@
                 <button class="button is-info create-thread">Create Thread</button>
                 <div class="thread-creator is-hidden">
                     <form id="create-thread-form" action="/sendthread" method="post">
+                        <input id="threadpostcode" name="threadpostcode" class="is-hidden" type="text">
                         <div class="field">
                             <p class="control">
                                 <label for="title" class="label">Title</label>
@@ -86,7 +87,7 @@
                             <div class="field has-addons">
                                 <p class="control">
                                     <span class="select">
-                                    <select name="colour-select" id="marker-select">
+                                    <select name="mcolour" id="marker-select">
                                         <option>None</option>
                                         <option>Blue</option>
                                         <option>Green</option>
@@ -108,50 +109,10 @@
                         </div>
                     </form>
                 </div>
+                <div id="threads"></div>
             </div>
             <div id="maps" class="column">
                 <div id="map"></div>
-                <script>
-                var map;
-                var usermarker;
-                function initMap() {
-                    var marker = {lat: lati, lng: lngi};
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 17,
-                        center: marker,
-                        scrollwheel: false,
-                        navigationControl: false,
-                        mapTypeControl: false,
-                        draggable: false,
-                        zoomControl: false,
-                        disableDoubleClickZoom: true
-                    });
-                    var marker = new google.maps.Marker({
-                        position: marker,
-                        map: map
-                    });
-                    map.setCenter(marker.getPosition());
-                    google.maps.event.addListener(map, 'click', function(event) {
-                        placeMarker(event.latLng);
-                    });
-                }
-
-                function placeMarker(location) {
-                    if($('#marker-select').val() != 'None'){
-                        $('.marker-latitude').val(location.lat());
-                        $('.marker-longitude').val(location.lng());
-                        if(usermarker){
-                            usermarker.setMap(null);  
-                        }           
-                        usermarker = new google.maps.Marker({
-                            position: location, 
-                            map: map,
-                            icon: 'http://maps.google.com/mapfiles/ms/icons/' + $('#marker-select').val().toLowerCase() +'-dot.png'
-                        });
-                    }
-                }
-     
-            </script>
             </div>
             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script src="/js/lookup.js"></script>
