@@ -8,6 +8,7 @@
     "moment": "^2.18.1",
     "momentjs": "^2.0.0",
     "mysql": "^2.13.0",
+    "node-pushnotifications": "^1.0.18",
     "socket.io": "^1.7.3"
   },
   "main": "index.js",

@@ -113,6 +113,14 @@ app.post('/sendthread', function(req, res){
     res.end();
 });
 
+const settings = {
+    gcm: {
+        id: null,
+    }
+};
+const PushNotifications = new require('node-pushnotifications');
+const push = new PushNotifications(settings);
+
 var port = process.env.port || 3000;
 http.listen(port, function(){
   console.log('listening on *:' + port);

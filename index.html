@@ -9,6 +9,7 @@
 	<title>Neighbour Yo!</title>
     <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
     <link href="/css/bulma.css" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
 </head>
 <body>
     <div class="content hero is-info">
@@ -114,9 +115,11 @@
             <div id="maps" class="column">
                 <div id="map"></div>
             </div>
+            <script type="text/javascript" src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <script src="/js/lookup.js"></script>
             <script src="/js/naybur.js"></script>
+            <script type="text/javascript" src="/js/firebase.js"></script>
             <script src="/socket.io/socket.io.js"></script>
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw"></script>
             <script>
@@ -154,7 +157,6 @@
             ga('create', 'UA-98753896-1', 'auto');
             ga('send', 'pageview');
             </script>
-
         </div>
     </div>
 </body>
