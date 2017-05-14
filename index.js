@@ -19,6 +19,19 @@ var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
+var firebase = require("firebase");
+
+// Initialize Firebase
+// TODO: Replace with your project's customized code snippet
+var config = {
+  apiKey: "AIzaSyB_01UHfTmGIJftmO2SegfBL65oslofiaY",
+  authDomain: "naybur-1494156012972.firebaseapp.com",
+  databaseURL: "https://naybur-1494156012972.firebaseio.com",
+  //projectId: "naybur-1494156012972",
+  storageBucket: "naybur-1494156012972.appspot.com"
+  //messagingSenderId: "739083803931"
+};
+firebase.initializeApp(config);
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -59,6 +72,28 @@ app.get('/checkmessages', function(req, res){
     pool.getConnection(function(err, connection) {
         if (err) throw err;
         var sql = mysql.format("SELECT * FROM nayburdb.messages WHERE postcode = ?", [data.postcode]);
+        connection.query(sql, function (error, results, fields) {
+          connection.release();
+          if(error){
+            res.send("fail");
+            throw error;
+          } else if(results.length > 0) {
+            res.send(results);
+          } else {
+            res.send("none");
+          }
+        });
+    });
+});
+
+app.get('/getthreadbyid', function(req, res){
+    var data = {
+        id: req.query.id
+    };
+
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        var sql = mysql.format("SELECT * FROM nayburdb.threads WHERE id = ?", [data.id]);
         connection.query(sql, function (error, results, fields) {
           connection.release();
           if(error){

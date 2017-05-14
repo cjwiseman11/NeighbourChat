@@ -105,7 +105,7 @@ function placeMarker(location) {
                     if (results.hasOwnProperty(key)) {
                         labelno++;
                         var val = results[key];
-                        $('#threads').prepend($('<div class="message content"><div class="message-body"><div class="level is-mobile"><div class="level-left"><h3 class="dont-break-out level-item">' + val.title + '</h3></div><div class="level-right"><div class="marker-colour"><img src="http://maps.google.com/mapfiles/ms/icons/' + val.markercolour.toLowerCase() +'-dot.png"></div></div></div></div>'));
+                        $('#threads').prepend($('<div class="message content"><a class="thread-link" id="' + val.id + '" href="#thread-' + labelno + '"><div class="message-body"><div class="level is-mobile"><div class="level-left"><h3 class="dont-break-out level-item">' + val.title + '</h3></div><div class="level-right"><div class="marker-colour"><img src="http://maps.google.com/mapfiles/ms/icons/' + val.markercolour.toLowerCase() +'-dot.png"></div></div></div></div></a>'));
                         var markerloc = new google.maps.LatLng(val.markerlat, val.markerlng)
                         var threadmarker = new google.maps.Marker({
                             position: markerloc, 
