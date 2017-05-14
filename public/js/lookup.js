@@ -47,6 +47,7 @@ function placeMarker(location) {
                     var string = data.results[0].formatted_address.split(postcode,1)[0].replace(components.street_number + " ", "");
                     lati = data.results[0].geometry.location.lat;
                     lngi = data.results[0].geometry.location.lng;
+                    initMap();
                     localStorage.setItem('nayburResults', JSON.stringify({ 'lati': lati, 'lngi': lngi, 'postcode': postcode, 'string': string }));
                     setPostcode(postcode, string);
                     console.log( "Found" );
@@ -99,6 +100,7 @@ function placeMarker(location) {
                 $('#threads').prepend('<div class="message"><div class="message-body has-text-centered">Be first to shout here :)</div></div>')
             } else {
                 var labelno = 0;
+                var infowindow = [];
                 for (var key in results) {
                     if (results.hasOwnProperty(key)) {
                         labelno++;
@@ -113,6 +115,12 @@ function placeMarker(location) {
                             title: val.title,
                             label: labelno.toString()
                         });
+                        /*var infowindow = new google.maps.InfoWindow({
+                            content: val.title
+                        });
+                        threadmarker.addListener('click', function() {
+                            infowindow.open(map, threadmarker);
+                        });*/
                         threadmarker.setMap(map);
                     }
                 } 
@@ -135,12 +143,6 @@ function placeMarker(location) {
         $('#postcode').html("<strong>" + postcode.toUpperCase() + "</strong>");
         $('.chat-section').removeClass("is-hidden");
         $('#threadpostcode').val(postcode);
-        if(!scriptLoaded){
-            $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw&callback=initMap");
-            scriptLoaded = true;
-        } else {
-            initMap();
-        }
         getMessages(postcode);
         getThreads(postcode);
     }
