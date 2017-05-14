@@ -55,6 +55,7 @@ app.get('/checkmessages', function(req, res){
     };
 
     pool.getConnection(function(err, connection) {
+        if (err) throw err;
         var sql = mysql.format("SELECT * FROM nayburdb.messages WHERE postcode = ?", [data.postcode]);
         connection.query(sql, function (error, results, fields) {
           connection.release();

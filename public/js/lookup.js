@@ -13,11 +13,6 @@ function initMap() {
         zoomControl: false,
         disableDoubleClickZoom: true
     });
-    var marker = new google.maps.Marker({
-        position: marker,
-        map: map
-    });
-    map.setCenter(marker.getPosition());
     google.maps.event.addListener(map, 'click', function(event) {
         placeMarker(event.latLng);
     });
@@ -103,16 +98,20 @@ function placeMarker(location) {
             } else if(results == "none") {
                 $('#threads').prepend('<div class="message"><div class="message-body has-text-centered">Be first to shout here :)</div></div>')
             } else {
+                var labelno = 0;
                 for (var key in results) {
                     if (results.hasOwnProperty(key)) {
+                        labelno++;
                         var val = results[key];
-                        $('#threads').prepend($('<div class="message"><div class="message-body"><div class="level"><div class="level-left"><h3 class="dont-break-out level-item">' + val.title + '</h3></div><div class="level-right"><div class="marker-colour"><img src="http://maps.google.com/mapfiles/ms/icons/' + val.markercolour.toLowerCase() +'-dot.png"></div></div></div><p>' + val.message + '</p></div>'));
+                        $('#threads').prepend($('<div class="message content"><div class="message-body"><div class="level is-mobile"><div class="level-left"><h3 class="dont-break-out level-item">' + val.title + '</h3></div><div class="level-right"><div class="marker-colour"><img src="http://maps.google.com/mapfiles/ms/icons/' + val.markercolour.toLowerCase() +'-dot.png"></div></div></div></div>'));
                         var markerloc = new google.maps.LatLng(val.markerlat, val.markerlng)
                         var threadmarker = new google.maps.Marker({
                             position: markerloc, 
                             map: map,
+                            labelOrigin: new google.maps.Point(0, 0),
                             icon: 'http://maps.google.com/mapfiles/ms/icons/' + val.markercolour.toLowerCase() +'-dot.png',
-                            title: val.title
+                            title: val.title,
+                            label: labelno.toString()
                         });
                         threadmarker.setMap(map);
                     }
