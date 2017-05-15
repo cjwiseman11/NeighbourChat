@@ -100,14 +100,15 @@ function placeMarker(location) {
                 $('#threads').prepend('<div class="message"><div class="message-body has-text-centered">Be first to create a thread here :)</div></div>')
             } else {
                 var labelno = 0;
-                var infowindow = [];
+                var threadmarker = [];
                 for (var key in results) {
                     if (results.hasOwnProperty(key)) {
                         labelno++;
                         var val = results[key];
                         $('#threads').prepend($('<div class="message content"><a class="thread-link" id="' + val.id + '"><div class="message-body"><div class="level is-mobile"><div class="level-left"><h3 class="dont-break-out level-item">' + val.title + '</h3></div><div class="level-right"><div class="marker-colour"><img src="http://maps.google.com/mapfiles/ms/icons/' + val.markercolour.toLowerCase() +'-dot.png"></div></div></div></div></a>'));
                         var markerloc = new google.maps.LatLng(val.markerlat, val.markerlng)
-                        var threadmarker = new google.maps.Marker({
+                        threadmarker = new google.maps.Marker({
+                            id: val.id,
                             position: markerloc, 
                             map: map,
                             labelOrigin: new google.maps.Point(0, 0),
@@ -115,17 +116,19 @@ function placeMarker(location) {
                             title: val.title,
                             label: labelno.toString()
                         });
-                        /*var infowindow = new google.maps.InfoWindow({
-                            content: val.title
+                        google.maps.event.addListener(threadmarker, 'click', function(){
+                            selectThreadByID(this.id);
                         });
-                        threadmarker.addListener('click', function() {
-                            infowindow.open(map, threadmarker);
-                        });*/
                         threadmarker.setMap(map);
                     }
                 } 
             }
         });
+    }
+
+    function selectThreadByID(id){
+        $('a.threadstablink').click();
+        $('a#' + id).click();
     }
     
     function lookupFail(){
@@ -167,7 +170,9 @@ $(function(){
         searchPostCode(postcode);
     });
     $('#reset').on("click", function(){
-        
+        $('.unique-thread-tab').remove();
+        $('.threadselected-column').addClass("is-hidden");
+        $('.threadselected-column').html("");
         $('#messages').html("");
         $('#threads').html("");
         $('.chat-section').addClass("is-hidden");
@@ -179,6 +184,10 @@ $(function(){
         $('.pcinput').removeClass('is-danger');
         $('.help').addClass('is-hidden');
         $('.tabs').addClass('is-hidden');
+        $('.chat-column').removeClass('is-hidden');
+        $('.threads-column').addClass('is-hidden');
+        $('.tabs li.is-active').removeClass('is-active');
+        $('.chattablink').parent().addClass('is-active');
         localStorage.removeItem('nayburResults');
     });
 });

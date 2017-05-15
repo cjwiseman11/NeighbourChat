@@ -7,7 +7,6 @@ $('.tabs').on('click', 'a', function(){
     } else {
         $('.' + $(this).text().toLowerCase() + '-column').removeClass('is-hidden');
     }
-    google.maps.event.trigger(map, 'resize');
 });
 
 $('.create-thread').on("click", function(){
@@ -22,9 +21,9 @@ $('#threads').on("click", '.thread-link', function(){
         $.getJSON("/getthreadbyid?id=" + $(this).attr("id"), function(data) {
             console.log( "thread success" );
             if($('[data-tab]').length > 0){
-                $('[data-tab]').parent().html("<li><a data-tab='thread-tab' class='" + data[0].id + "'>" + data[0].title + "</a></li>");
+                $('[data-tab]').parent().html("<a data-tab='thread-tab' class='" + data[0].id + "'>" + data[0].title + "</a>");
             } else {
-                $('.tabs > ul').append("<li><a data-tab='thread-tab' class='" + data[0].id + "'>" + data[0].title + "</a></li>");
+                $('.tabs > ul').append("<li class='unique-thread-tab'><a data-tab='thread-tab' class='" + data[0].id + "'>" + data[0].title + "</a></li>");
             }
             $('.' + data[0].id).click();
         })
