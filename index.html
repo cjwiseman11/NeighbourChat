@@ -47,15 +47,15 @@
         <div class="tabs is-hidden">
             <ul>
                 <li class="is-active">
-                    <a>Threads</a>
+                    <a>Chat</a>
                 </li>
                 <li>
-                    <a>Chat</a>
+                    <a>Threads</a>
                 </li>
             </ul>
         </div>
-        <div class="chat-section columns is-hidden">
-            <div class="column chat-column cscolumn is-hidden">
+        <div class="chat-section columns">
+            <div class="column chat-column cscolumn">
                 <form id="msg-form">
                     <div class="field is-grouped shoutbox-area">
                         <label class="label"></label>
@@ -69,7 +69,7 @@
                 </form>
                 <article id="messages"></article>
             </div>
-            <div class="column cscolumn threads-column">
+            <div class="column cscolumn threads-column is-hidden">
                 <button class="button is-info create-thread">Create Thread</button>
                 <div class="thread-creator is-hidden">
                     <form id="create-thread-form" action="/sendthread" method="post">

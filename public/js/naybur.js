@@ -1,12 +1,3 @@
-/*$('.tabs a').each(function(){
-    $(this).bind("click",function(){
-        $('.' + $('.tabs li.is-active > a').text().toLowerCase() + '-column').addClass('is-hidden');
-        $('.tabs li.is-active').removeClass('is-active');
-        $(this).parent().addClass('is-active');
-        $('.' + $(this).text().toLowerCase() + '-column').removeClass('is-hidden');
-    });
-});*/
-
 $('.tabs').on('click', 'a', function(){
     $('.cscolumn').addClass('is-hidden');
     $('.tabs li.is-active').removeClass('is-active');
@@ -16,6 +7,7 @@ $('.tabs').on('click', 'a', function(){
     } else {
         $('.' + $(this).text().toLowerCase() + '-column').removeClass('is-hidden');
     }
+    google.maps.event.trigger(map, 'resize');
 });
 
 $('.create-thread').on("click", function(){
@@ -38,10 +30,29 @@ $('#threads').on("click", '.thread-link', function(){
         })
         .done(function(data) {
             if(data.length > 0){
-                $('.threadselected-column').html('<div class="content"><h3>' + data[0].title + '</h3></div>'+
-                                                    '<div class="threadmessage"><p>' + data[0].message + '</p><div>'+
-                                                    '<div class="timeposted">' + data[0].timeposted + '</div>'+
-                                                '</div>');
+                $('.threadselected-column').html('<div class="level">'+
+                                                    '<div class="level-item level-left"><strong>' + data[0].title + '</strong></div>'+
+                                                    '<div class="timeposted level-item level-left">' + data[0].timeposted + '</div>'+
+                                                    '<div class="level-item level-left"><img src="http://maps.google.com/mapfiles/ms/icons/' + data[0].markercolour.toLowerCase() +'-dot.png"></div>'+
+                                                '</div>'+
+                                                '<article class="media">'+
+                                                    '<div class="media-content">'+
+                                                        '<div class="content">'+
+                                                        '<p>'+
+                                                             data[0].message +
+                                                        '</p>'+
+                                                    '</div>'+
+                                                '</article>'+
+                                                '<article class="media">'+
+                                                    '<div class="media-content">'+
+                                                        '<div class="field">'+
+                                                        '<p class="control"><textarea class="textarea" placeholder="Add a comment..."></textarea></p>'+
+                                                        '</div>'+
+                                                        '<div class="field">'+
+                                                        '<p class="control"><button class="button">Post comment</button></p>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                                                '</article>');
             } else {
                 console.log("Thread Not Found");
             }
