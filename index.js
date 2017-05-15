@@ -49,12 +49,9 @@ io.on('connection', function(socket){
       socket.join(postcode);
       io.sockets.in(postcode).emit('chat message', msg, postcode);
       pool.getConnection(function(err, connection) {
-        var sql = mysql.format("INSERT INTO `messages`(`postcode`, `message`) VALUES (?, ?)", [postcode, msg]);
-        connection.query(sql, function (error, results, fields) {
-          connection.release();
-          if(error){
-            throw error;
-          }
+          var sql = mysql.format("INSERT INTO `messages`(`postcode`, `message`) VALUES (?, ?)", [postcode, msg]);
+          pool.query(sql, function (error, results, fields) {
+          if (err) return done(err);
         });
         console.log('Added');
       });

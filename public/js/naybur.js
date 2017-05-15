@@ -24,19 +24,20 @@ $('.create-thread').on("click", function(){
 });
 
 $('#threads').on("click", '.thread-link', function(){
+        $('.threads-column').addClass('is-hidden');
+        $('.threadselected-column').removeClass('is-hidden');
+        $('.threadselected-column').html('Loading this thread...');
         $.getJSON("/getthreadbyid?id=" + $(this).attr("id"), function(data) {
-            console.log( "success" );
+            console.log( "thread success" );
+            if($('[data-tab]').length > 0){
+                $('[data-tab]').parent().html("<li><a data-tab='thread-tab' class='" + data[0].id + "'>" + data[0].title + "</a></li>");
+            } else {
+                $('.tabs > ul').append("<li><a data-tab='thread-tab' class='" + data[0].id + "'>" + data[0].title + "</a></li>");
+            }
+            $('.' + data[0].id).click();
         })
         .done(function(data) {
             if(data.length > 0){
-                if($('[data-tab]').length > 0){
-                    $('[data-tab]').parent().html("<li><a data-tab='thread-tab' class='" + data[0].id + "'>" + data[0].title + "</a></li>");
-                } else {
-                    $('.tabs > ul').append("<li><a data-tab='thread-tab' class='" + data[0].id + "'>" + data[0].title + "</a></li>");
-                }
-                $('.' + data[0].id).click();
-                $('.threads-column').addClass('is-hidden');
-                $('.threadselected-column').removeClass('is-hidden');
                 $('.threadselected-column').html('<div class="content"><h3>' + data[0].title + '</h3></div>'+
                                                     '<div class="threadmessage"><p>' + data[0].message + '</p><div>'+
                                                     '<div class="timeposted">' + data[0].timeposted + '</div>'+
