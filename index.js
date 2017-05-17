@@ -4,14 +4,15 @@ var config = require('../config')[env];
 
 var mysql      = require('mysql');
 var pool = mysql.createPool({
-  connectionLimit: 2,
+  connectionLimit: 1,
   waitForConnections: true,
   queueLimit: 0,
   host     : config.database.host,
   user     : config.database.user,
   password : config.database.pass,
   dateStrings:true,
-  database : config.database.db
+  database : config.database.db,
+  insecureAuth: true
 });
 
 var app = require('express')();
