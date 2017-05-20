@@ -150,11 +150,11 @@ function placeMarker(location) {
         getThreads(postcode);
     }
 $(function(){
-    var pathname = window.location.pathname.replace("/","");
+    /*var pathname = window.location.pathname.replace("/","");
     if(pathname != ""){
         $('.pcinput').val(pathname);
         searchPostCode(pathname);
-    }/* else if (!(localStorage.getItem("nayburResults") === null)) {
+    } else if (!(localStorage.getItem("nayburResults") === null)) {
         var results = JSON.parse(localStorage.getItem('nayburResults'));
         var postcode = results.postcode;
         var string = results.string;
