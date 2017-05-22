@@ -43,6 +43,7 @@ function placeMarker(location) {
                 var components={}; 
                 jQuery.each(address_components, function(k,v1) {jQuery.each(v1.types, function(k2, v2){components[v2]=v1.long_name});});
                 if(components.postal_code){
+                    $('.nayburhead').removeClass('hero-body');
                     postcode = components.postal_code;
                     var string = data.results[0].formatted_address.split(postcode,1)[0].replace(components.street_number + " ", "");
                     lati = data.results[0].geometry.location.lat;
@@ -188,6 +189,7 @@ $(function(){
         $('.threads-column').addClass('is-hidden');
         $('.tabs li.is-active').removeClass('is-active');
         $('.chattablink').parent().addClass('is-active');
+        $('.nayburhead').addClass('hero-body');
         localStorage.removeItem('nayburResults');
     });
 });

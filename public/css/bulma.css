@@ -36,6 +36,10 @@
 
 }
 
+.postcode-area > .results{
+  padding-top:0.75em;
+}
+
 
 /*! bulma.io v0.4.0 | MIT License | github.com/jgthms/bulma */
 @-webkit-keyframes spinAround {

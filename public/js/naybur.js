@@ -39,7 +39,7 @@ $('#threads').on("click", '.thread-link', function(){
                                                 '<article class="media">'+
                                                     '<figure class="media-left">'+
                                                         '<p class="image is-64x64">'+
-                                                        '<img src="http://bulma.io/images/placeholders/128x128.png">'+
+                                                        '<img src="">'+
                                                         '</p>'+
                                                     '</figure>'+
                                                     '<div class="media-content thread-article">'+
@@ -72,7 +72,7 @@ $('#threads').on("click", '.thread-link', function(){
                                 $('.thread-article').append('<article class="media">'+
                                                                 '<figure class="media-left">'+
                                                                     '<p class="image is-48x48">'+
-                                                                    '<img src="http://bulma.io/images/placeholders/128x128.png">'+
+                                                                    '<img src="">'+
                                                                     '</p>'+
                                                                 '</figure>'+
                                                                 '<div class="media-content">'+
@@ -81,7 +81,6 @@ $('#threads').on("click", '.thread-link', function(){
                                                                         '<strong>Reply ' + key + '</strong>'+
                                                                         '<br>'+
                                                                         '<div class="threadmessage">' + val.message + '</div>'+                                                                                
-                                                                        '<br>'+
                                                                     '</p>'+
                                                                 '</div>'+
                                                             '</article>');
