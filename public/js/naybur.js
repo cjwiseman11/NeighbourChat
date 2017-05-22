@@ -29,7 +29,7 @@ $('#threads').on("click", '.thread-link', function(){
         })
         .done(function(data) {
             if(data.length > 0){
-                window.history.pushState(data[0].postcode, "Thread", "?postcode=" + data[0].postcode + "&thread=" + data[0].id);
+                window.history.pushState({val1: data[0].postcode, val2: data[0].id}, "Thread", "?postcode=" + data[0].postcode + "&thread=" + data[0].id);
                 $('.threadselected-column').attr('data-threadid', data[0].id);
                 $('.threadselected-column').html('<div class="level">'+
                                                     '<div class="level-item level-left"><strong>' + data[0].title + '</strong></div>'+

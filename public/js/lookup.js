@@ -187,15 +187,24 @@ $(function(){
     $('.postcode-area').removeClass("is-hidden");
     $('#lookup').on("click", function(){
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
-        window.history.pushState(postcode, postcode, '?postcode=' + postcode);
+        window.history.pushState({val1: postcode, val2: null}, postcode, '?postcode=' + postcode);
+        console.log(window.history.state);
         $(this).addClass('is-loading');
         searchPostCode(postcode);
     });
     window.onpopstate = function(e){
-        if(e.state == null || typeof e.state === 'object'){
+        if(e.state == "Home"){
             resetPage();
-        } else if (typeof e.state === 'string'){
-            searchPostCode(e.state);
+        } else if (typeof e.state.val1 === 'string'){
+            searchPostCode(e.state.val1);
+            if(typeof e.state.val2 === 'number'){
+                var checkExist = setInterval(function() {
+                if ($('.threadloaded').length) {
+                    selectThreadByID(e.state.val2);
+                    clearInterval(checkExist);
+                }
+            }, 100);
+            }
         }
     };
     $('#reset').on("click", function(){
