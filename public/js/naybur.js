@@ -35,10 +35,16 @@ $('#threads').on("click", '.thread-link', function(){
                                                     '<div class="timeposted level-item level-left">' + data[0].timeposted + '</div>'+
                                                     '<div class="level-item level-left"><img src="http://maps.google.com/mapfiles/ms/icons/' + data[0].markercolour.toLowerCase() +'-dot.png"></div>'+
                                                 '</div>'+
+                                                '<hr>'+
                                                 '<article class="media">'+
-                                                    '<div class="media-content">'+
+                                                    '<figure class="media-left">'+
+                                                        '<p class="image is-64x64">'+
+                                                        '<img src="http://bulma.io/images/placeholders/128x128.png">'+
+                                                        '</p>'+
+                                                    '</figure>'+
+                                                    '<div class="media-content thread-article">'+
                                                         '<div class="content">'+
-                                                        '<p>'+
+                                                        '<p><strong>Original Post</strong><br><br>'+
                                                              data[0].message +
                                                         '</p>'+
                                                     '</div>'+
@@ -63,7 +69,22 @@ $('#threads').on("click", '.thread-link', function(){
                         for (var key in data2) {
                             if (data2.hasOwnProperty(key)) {
                                 var val = data2[key];
-                                $('.threadmessage-submit').prepend("<div class='threadmessage'>" + val.message + "</div>");
+                                $('.thread-article').append('<article class="media">'+
+                                                                '<figure class="media-left">'+
+                                                                    '<p class="image is-48x48">'+
+                                                                    '<img src="http://bulma.io/images/placeholders/128x128.png">'+
+                                                                    '</p>'+
+                                                                '</figure>'+
+                                                                '<div class="media-content">'+
+                                                                    '<div class="content">'+
+                                                                    '<p>'+
+                                                                        '<strong>Reply ' + key + '</strong>'+
+                                                                        '<br>'+
+                                                                        '<div class="threadmessage">' + val.message + '</div>'+                                                                                
+                                                                        '<br>'+
+                                                                    '</p>'+
+                                                                '</div>'+
+                                                            '</article>');
                             }
                         } 
                     }
