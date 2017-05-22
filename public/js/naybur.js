@@ -1,13 +1,3 @@
-function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
 $('.tabs').on('click', 'a', function(){
     $('.cscolumn').addClass('is-hidden');
     $('.tabs li.is-active').removeClass('is-active');
@@ -39,6 +29,7 @@ $('#threads').on("click", '.thread-link', function(){
         })
         .done(function(data) {
             if(data.length > 0){
+                window.history.pushState(data[0].postcode, "Thread", "?postcode=" + data[0].postcode + "&thread=" + data[0].id);
                 $('.threadselected-column').attr('data-threadid', data[0].id);
                 $('.threadselected-column').html('<div class="level">'+
                                                     '<div class="level-item level-left"><strong>' + data[0].title + '</strong></div>'+
