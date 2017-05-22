@@ -1,3 +1,14 @@
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
 var map;
 var usermarker;
 var scriptLoaded = false;
@@ -34,6 +45,7 @@ function placeMarker(location) {
 }
 
     function searchPostCode(postcode){
+        $('#messages').html("");
         $.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + postcode + "&key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw&components=country%3aGB", function(data) {
             console.log( "success" );
         })
@@ -43,7 +55,7 @@ function placeMarker(location) {
                 var components={}; 
                 jQuery.each(address_components, function(k,v1) {jQuery.each(v1.types, function(k2, v2){components[v2]=v1.long_name});});
                 if(components.postal_code){
-                    $('.nayburhead').removeClass('hero-body');
+                    $('.nayburhead').removeClass('hero-body').addClass('heropad');
                     postcode = components.postal_code;
                     var string = data.results[0].formatted_address.split(postcode,1)[0].replace(components.street_number + " ", "");
                     lati = data.results[0].geometry.location.lat;
@@ -96,9 +108,9 @@ function placeMarker(location) {
         $.get('/checkthreads?postcode=' + postcode, function(results) {
             $('.loading-msg').remove();
             if(results == "fail"){
-                $('#threads').prepend('<div class="message is-danger"><div class="message-body has-text-centered">Threads failed to load for some reason. Please try again.</div></div>')
+                $('#threads').prepend('<div class="message threadloaded is-danger"><div class="message-body has-text-centered">Threads failed to load for some reason. Please try again.</div></div>')
             } else if(results == "none") {
-                $('#threads').prepend('<div class="message"><div class="message-body has-text-centered">Be first to create a thread here :)</div></div>')
+                $('#threads').prepend('<div class="message threadloaded"><div class="message-body has-text-centered">Be first to create a thread here :)</div></div>')
             } else {
                 var labelno = 0;
                 var threadmarker = [];
@@ -106,7 +118,7 @@ function placeMarker(location) {
                     if (results.hasOwnProperty(key)) {
                         labelno++;
                         var val = results[key];
-                        $('#threads').prepend($('<div class="message content"><a class="thread-link" id="' + val.id + '"><div class="message-body"><div class="level is-mobile"><div class="level-left"><h3 class="dont-break-out level-item">' + val.title + '</h3></div><div class="level-right"><div class="marker-colour"><img src="http://maps.google.com/mapfiles/ms/icons/' + val.markercolour.toLowerCase() +'-dot.png"></div></div></div></div></a>'));
+                        $('#threads').prepend($('<div class="message threadloaded content"><a class="thread-link" id="' + val.id + '"><div class="message-body"><div class="level is-mobile"><div class="level-left"><h3 class="dont-break-out level-item">' + val.title + '</h3></div><div class="level-right"><div class="marker-colour"><img src="http://maps.google.com/mapfiles/ms/icons/' + val.markercolour.toLowerCase() +'-dot.png"></div></div></div></div></a>'));
                         var markerloc = new google.maps.LatLng(val.markerlat, val.markerlng)
                         threadmarker = new google.maps.Marker({
                             id: val.id,
@@ -151,11 +163,20 @@ function placeMarker(location) {
         getThreads(postcode);
     }
 $(function(){
-    /*var pathname = window.location.pathname.replace("/","");
-    if(pathname != ""){
+    var pathname = getParameterByName("postcode");
+    var threadid = getParameterByName("thread");
+    if(pathname != null && pathname != ""){
         $('.pcinput').val(pathname);
         searchPostCode(pathname);
-    } else if (!(localStorage.getItem("nayburResults") === null)) {
+        if(threadid != null && threadid != ""){
+            var checkExist = setInterval(function() {
+                if ($('.threadloaded').length) {
+                    selectThreadByID(threadid);
+                    clearInterval(checkExist);
+                }
+            }, 100);
+        }
+    }/* else if (!(localStorage.getItem("nayburResults") === null)) {
         var results = JSON.parse(localStorage.getItem('nayburResults'));
         var postcode = results.postcode;
         var string = results.string;
@@ -166,11 +187,32 @@ $(function(){
     $('.postcode-area').removeClass("is-hidden");
     $('#lookup').on("click", function(){
         var postcode = $('.pcinput').val().toLowerCase().replace(/\s/g, '');
-        $('#messages').html("");
+        window.history.pushState({val1: postcode, val2: null}, postcode, '?postcode=' + postcode);
+        console.log(window.history.state);
         $(this).addClass('is-loading');
         searchPostCode(postcode);
     });
+    window.onpopstate = function(e){
+        if(e.state == "Home"){
+            resetPage();
+        } else if (typeof e.state.val1 === 'string'){
+            searchPostCode(e.state.val1);
+            if(typeof e.state.val2 === 'number'){
+                var checkExist = setInterval(function() {
+                if ($('.threadloaded').length) {
+                    selectThreadByID(e.state.val2);
+                    clearInterval(checkExist);
+                }
+            }, 100);
+            }
+        }
+    };
     $('#reset').on("click", function(){
+        resetPage();
+        window.history.pushState("Home", "Home", "/");
+    });
+
+    function resetPage(){
         $('.unique-thread-tab').remove();
         $('.threadselected-column').addClass("is-hidden");
         $('.threadselected-column').html("");
@@ -189,10 +231,12 @@ $(function(){
         $('.threads-column').addClass('is-hidden');
         $('.tabs li.is-active').removeClass('is-active');
         $('.chattablink').parent().addClass('is-active');
-        $('.nayburhead').addClass('hero-body');
+        $('.nayburhead').removeClass('heropad').addClass('hero-body');
         localStorage.removeItem('nayburResults');
-    });
+    }
 });
+
+
 
 
 
