@@ -4,10 +4,11 @@ var config = require('../config')[env];
 
 var mysql      = require('mysql');
 var pool = mysql.createPool({
-  connectionLimit: 1,
+  connectionLimit: 5,
   waitForConnections: true,
   queueLimit: 0,
   host     : config.database.host,
+  port: config.server.port,
   user     : config.database.user,
   password : config.database.pass,
   dateStrings:true,
@@ -69,7 +70,7 @@ app.get('/checkmessages', function(req, res){
 
     pool.getConnection(function(err, connection) {
         if (err) throw err;
-        var sql = mysql.format("SELECT * FROM nayburdb.messages WHERE postcode = ?", [data.postcode]);
+        var sql = mysql.format("SELECT * FROM pepperte_naybur.messages WHERE postcode = ?", [data.postcode]);
         connection.query(sql, function (error, results, fields) {
           connection.release();
           if(error){
@@ -91,7 +92,7 @@ app.get('/getthreadbyid', function(req, res){
 
     pool.getConnection(function(err, connection) {
         if (err) throw err;
-        var sql = mysql.format("SELECT * FROM nayburdb.threads WHERE id = ?", [data.id]);
+        var sql = mysql.format("SELECT * FROM pepperte_naybur.threads WHERE id = ?", [data.id]);
         connection.query(sql, function (error, results, fields) {
           connection.release();
           if(error){
@@ -112,7 +113,7 @@ app.get('/checkthreads', function(req, res){
     };
 
     pool.getConnection(function(err, connection) {
-        var sql = mysql.format("SELECT * FROM nayburdb.threads WHERE postcode = ?", [data.postcode]);
+        var sql = mysql.format("SELECT * FROM pepperte_naybur.threads WHERE postcode = ?", [data.postcode]);
         connection.query(sql, function (error, results, fields) {
           connection.release();
           if(error){
@@ -134,7 +135,7 @@ app.get('/getthreadmessages', function(req, res){
 
     pool.getConnection(function(err, connection) {
         if (err) throw err;
-        var sql = mysql.format("SELECT * FROM nayburdb.threadmessages WHERE threadid = ? ORDER BY timeposted DESC", [data.threadid]);
+        var sql = mysql.format("SELECT * FROM pepperte_naybur.threadmessages WHERE threadid = ? ORDER BY timeposted DESC", [data.threadid]);
         connection.query(sql, function (error, results, fields) {
           connection.release();
           if(error){
@@ -157,7 +158,7 @@ app.get('/:postcode', function(req, res){
 app.post('/sendthread', function(req, res){
     console.log("Thread Submission");
     pool.getConnection(function(err, connection) {
-      var sql = mysql.format("INSERT INTO nayburdb.threads (title, message, markerlat, markerlng, markercolour, postcode) VALUES (?, ?, ?, ?, ?, ?)", [req.body.title, req.body.message, req.body.mlat, req.body.mlng, req.body.mcolour, req.body.threadpostcode]);
+      var sql = mysql.format("INSERT INTO pepperte_naybur.threads (title, message, markerlat, markerlng, markercolour, postcode) VALUES (?, ?, ?, ?, ?, ?)", [req.body.title, req.body.message, req.body.mlat, req.body.mlng, req.body.mcolour, req.body.threadpostcode]);
       connection.query(sql, function (error, results, fields) {
         connection.release();
         if(error){
@@ -171,7 +172,7 @@ app.post('/sendthread', function(req, res){
 app.post('/sendthreadmessage', function(req, res){
     console.log("Thread Message Submission");
     pool.getConnection(function(err, connection) {
-      var sql = mysql.format("INSERT INTO nayburdb.threadmessages (message, threadid) VALUES (?, ?)", [req.body.message, req.body.threadid]);
+      var sql = mysql.format("INSERT INTO pepperte_naybur.threadmessages (message, threadid) VALUES (?, ?)", [req.body.message, req.body.threadid]);
       connection.query(sql, function (error, results, fields) {
         connection.release();
         if(error){
@@ -185,7 +186,7 @@ app.post('/sendthreadmessage', function(req, res){
 app.post('/send', function(req, res){
     console.log("Thread Submission");
     pool.getConnection(function(err, connection) {
-      var sql = mysql.format("INSERT INTO nayburdb.threads (title, message, markerlat, markerlng, markercolour, postcode) VALUES (?, ?, ?, ?, ?, ?)", [req.body.title, req.body.message, req.body.mlat, req.body.mlng, req.body.mcolour, req.body.threadpostcode]);
+      var sql = mysql.format("INSERT INTO pepperte_naybur.threads (title, message, markerlat, markerlng, markercolour, postcode) VALUES (?, ?, ?, ?, ?, ?)", [req.body.title, req.body.message, req.body.mlat, req.body.mlng, req.body.mcolour, req.body.threadpostcode]);
       connection.query(sql, function (error, results, fields) {
         connection.release();
         if(error){
