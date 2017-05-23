@@ -169,12 +169,16 @@ $(function(){
         $('.pcinput').val(pathname);
         searchPostCode(pathname);
         if(threadid != null && threadid != ""){
-            var checkExist = setInterval(function() {
-                if ($('.threadloaded').length) {
-                    selectThreadByID(threadid);
-                    clearInterval(checkExist);
-                }
-            }, 100);
+            if(threadid == 0){
+                $('.threadstablink').click();
+            } else {
+                var checkExist = setInterval(function() {
+                    if ($('.threadloaded').length) {
+                        selectThreadByID(threadid);
+                        clearInterval(checkExist);
+                    }
+                }, 100);
+            }
         }
     }/* else if (!(localStorage.getItem("nayburResults") === null)) {
         var results = JSON.parse(localStorage.getItem('nayburResults'));

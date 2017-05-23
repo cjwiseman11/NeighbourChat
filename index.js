@@ -135,7 +135,7 @@ app.get('/getthreadmessages', function(req, res){
 
     pool.getConnection(function(err, connection) {
         if (err) throw err;
-        var sql = mysql.format("SELECT * FROM pepperte_naybur.threadmessages WHERE threadid = ? ORDER BY timeposted DESC", [data.threadid]);
+        var sql = mysql.format("SELECT * FROM pepperte_naybur.threadmessages WHERE threadid = ? ORDER BY timeposted ASC", [data.threadid]);
         connection.query(sql, function (error, results, fields) {
           connection.release();
           if(error){
@@ -166,7 +166,7 @@ app.post('/sendthread', function(req, res){
         }
       });
     });
-    res.end();
+    res.redirect('back');
 });
 
 app.post('/sendthreadmessage', function(req, res){
@@ -180,7 +180,7 @@ app.post('/sendthreadmessage', function(req, res){
         }
       });
     });
-    res.end();
+    res.redirect('back');
 });
 
 app.post('/send', function(req, res){

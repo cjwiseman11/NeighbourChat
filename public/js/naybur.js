@@ -14,6 +14,10 @@ $('.create-thread').on("click", function(){
     $(this).text(($(this).text() === 'Create Thread') ? 'Cancel' : 'Create Thread');
 });
 
+$('.threadstablink').on("click", function(){
+    window.history.pushState({val1: $('#postcode').text(), val2: 0}, "Thread", "?postcode=" + $('#postcode').text() + "&thread=" + 0);
+})
+
 $('#threads').on("click", '.thread-link', function(){
         $('.threads-column').addClass('is-hidden');
         $('.threadselected-column').removeClass('is-hidden');
@@ -39,8 +43,8 @@ $('#threads').on("click", '.thread-link', function(){
                                                 '<hr>'+
                                                 '<article class="media">'+
                                                     '<figure class="media-left">'+
-                                                        '<p class="image is-64x64">'+
-                                                        '<img src="">'+
+                                                        '<p class="image is-48x48">'+
+                                                        '<img src="/images/nayburlogo.png">'+
                                                         '</p>'+
                                                     '</figure>'+
                                                     '<div class="media-content thread-article">'+
@@ -72,8 +76,8 @@ $('#threads').on("click", '.thread-link', function(){
                                 var val = data2[key];
                                 $('.thread-article').append('<article class="media">'+
                                                                 '<figure class="media-left">'+
-                                                                    '<p class="image is-48x48">'+
-                                                                    '<img src="">'+
+                                                                    '<p class="image is-32x32">'+
+                                                                    '<img src="/images/nayburlogo.png">'+
                                                                     '</p>'+
                                                                 '</figure>'+
                                                                 '<div class="media-content">'+
