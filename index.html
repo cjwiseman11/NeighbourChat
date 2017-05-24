@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="content hero is-info">
-        <div class="container hero-body is-vcentered">
+        <div class="container nayburhead hero-body is-vcentered">
             <div class="columns is-vcentered">
                 <div class="column is-one-third is-left">
                     <h1 class="title">Naybur</h1>
@@ -47,15 +47,15 @@
         <div class="tabs is-hidden">
             <ul>
                 <li class="is-active">
-                    <a>Threads</a>
+                    <a class="chattablink">Chat</a>
                 </li>
                 <li>
-                    <a>Chat</a>
+                    <a class="threadstablink">Threads</a>
                 </li>
             </ul>
         </div>
         <div class="chat-section columns is-hidden">
-            <div class="column chat-column is-hidden">
+            <div class="column chat-column cscolumn">
                 <form id="msg-form">
                     <div class="field is-grouped shoutbox-area">
                         <label class="label"></label>
@@ -69,7 +69,7 @@
                 </form>
                 <article id="messages"></article>
             </div>
-            <div class="column threads-column">
+            <div class="column cscolumn threads-column is-hidden">
                 <button class="button is-info create-thread">Create Thread</button>
                 <div class="thread-creator is-hidden">
                     <form id="create-thread-form" action="/sendthread" method="post">
@@ -111,6 +111,8 @@
                 </div>
                 <div id="threads"></div>
             </div>
+            <div class="column cscolumn threadselected-column is-hidden">
+            </div>
             <div id="maps" class="column">
                 <div id="map"></div>
             </div>
@@ -118,7 +120,7 @@
             <script src="/js/lookup.js"></script>
             <script src="/js/naybur.js"></script>
             <script src="/socket.io/socket.io.js"></script>
-            <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw"></script>
             <script>
             var lngi;
             var lati;
@@ -154,7 +156,6 @@
             ga('create', 'UA-98753896-1', 'auto');
             ga('send', 'pageview');
             </script>
-
         </div>
     </div>
 </body>
