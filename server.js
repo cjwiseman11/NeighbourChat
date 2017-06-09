@@ -10,8 +10,10 @@ var app = express();
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var bodyParser = require('body-parser');
-var firebase = require("firebase");
+var googleMapsClient = require('@google/maps').createClient({
+  key: 'AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw'
+});
+
 // ================================================================
 // setup our express application
 // ================================================================
@@ -46,4 +48,28 @@ var pool = mysql.createPool({
 
 app.listen(port, function() {
  console.log('Server listening on port ' + port + '…');
+});
+
+//--- Calls ---\\
+
+app.get('/getNearbyPlaces', function(req, res) {
+  // Geocode an address.
+  googleMapsClient.geocode({
+    address: 'RG415EE'
+  }, function(err, response) {
+    if (!err) {
+      res.send(response.json.results);
+    }
+  });
+});
+
+app.get('/getNearbyPlaces', function(req, res) {
+  // Geocode an address.
+  googleMapsClient.geocode({
+    address: 'RG415EE'
+  }, function(err, response) {
+    if (!err) {
+      res.send(response.json.results);
+    }
+  });
 });
