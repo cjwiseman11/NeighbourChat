@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html">
+	<meta name="author" content="Chris Wiseman">
+	<title>Neighbr - Chat with your neighbours.</title>
+    <!--<link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">-->
+    <link href="public/css/bulma.css" rel="stylesheet">
+</head>
+<body>
+    <div class="columns main-section">
+        <div class="column is-info">
+            <div class="content column">
+                <h1>Neighbr</h1>
+                <form id="postcode_lookup">
+                    <p>Enter your postcode below:</p>
+                    <div class="field is-grouped">
+                        <p class="control has-icons-left is-expanded">
+                            <input class="pcinput input" type="text" placeholder="RG41 5EE">
+                        </p>
+                        <p class="control">
+                            <button id="lookup" class="button is-primary" onclick="return false;">Submit</button>
+                        </p>    
+                    </div>
+                    <p class="help is-danger is-hidden">That postcode was invalid.</p>
+                </form>     
+            </div>
+            <div class="tabs is-boxed is-centered is-fullwidth">
+                <ul>
+                    <li class="is-active"><a><span>Chat</span></a></li>
+                    <li><a><span>Broadcast</span></a></li>
+                    <li><a><span>Notice Board</span></a></li>
+                    <li><a><span>Stats</span></a></li>
+                </ul>
+            </div>  
+        </div>
+        <div class="column is-8">
+            <div id="maps">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw"></script>
+    <script>
+        function initMap() {
+            var marker = {lat: 53.473445, lng: -3.826114};
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 5,
+                center: marker
+            });
+            google.maps.event.addListener(map, 'click', function(event) {
+                placeMarker(event.latLng);
+            });
+        }
+        initMap();
+    </script>
+</body>
+</html>

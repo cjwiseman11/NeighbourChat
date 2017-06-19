@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Naybur Shout",
   "dependencies": {
+    "@google/maps": "^0.4.0",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "firebase": "^3.9.0",

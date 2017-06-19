@@ -155,6 +155,21 @@ app.get('/:postcode', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
 
+var googleMapsClient = require('@google/maps').createClient({
+  key: 'AIzaSyA1T7ZFvQQlEDq1Tc6qhTBLy7ICAjrHUbw'
+});
+
+app.get('/getNearbyPlaces', function(req, res){
+  // Geocode an address.
+  googleMapsClient.geocode({
+    address: 'RG41 5EE'
+  }, function(err, response) {
+    if (!err) {
+      res.send(response.json.results);
+    }
+  });
+});
+
 app.post('/sendthread', function(req, res){
     console.log("Thread Submission");
     pool.getConnection(function(err, connection) {
